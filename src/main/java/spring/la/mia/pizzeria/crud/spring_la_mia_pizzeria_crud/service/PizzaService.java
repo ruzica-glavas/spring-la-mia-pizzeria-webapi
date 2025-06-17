@@ -28,6 +28,10 @@ public class PizzaService {
         }
     }
 
+    public List<Pizza> findaAll(){
+        return pizzaRepository.findAll();
+    }
+
     public Pizza getById(Integer id){
         Optional<Pizza> pizza = pizzaRepository.findById(id);
         if (pizza.isEmpty()) {
