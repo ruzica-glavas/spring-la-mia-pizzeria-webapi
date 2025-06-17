@@ -16,7 +16,8 @@ import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.model.Offerta;
 import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.model.Pizza;
 import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.repository.IngredientRepository;
 //import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.repository.OffertaRepository;
-import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.repository.PizzaRepository;
+// import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.repository.PizzaRepository;
+import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.service.PizzaService;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PizzaController {
 
     @Autowired
-    private PizzaRepository pizzaRepository;
+    private PizzaService pizzaService;
 
     @Autowired
     private IngredientRepository ingredientRepository;
@@ -41,13 +42,7 @@ public class PizzaController {
     @GetMapping
     public String index(@RequestParam(name="name", required = false) String name,  Model model) {
 
-        List<Pizza> pizzas; //= repository.findAll();
-
-        if(name !=null && !name.isBlank()){
-            pizzas = pizzaRepository.findByNameContainingIgnoreCase(name);
-        }else{
-            pizzas=pizzaRepository.findAll();
-        }
+        List<Pizza> pizzas= pizzaService.findAll(name);
 
         model.addAttribute("pizzas", pizzas);
         model.addAttribute("name", name);
@@ -57,8 +52,8 @@ public class PizzaController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Integer id, Model model){
 
-        Pizza pizza = pizzaRepository.findById(id).get();
-        model.addAttribute("pizza", pizza);
+        //Pizza pizza = pizzaRepository.findById(id).get();
+        model.addAttribute("pizza", pizzaService.getById(id));
         return "pizzas/show";
     }
 
@@ -76,7 +71,7 @@ public class PizzaController {
             return "pizzas/create";
         }
 
-        pizzaRepository.save(formPizza);
+        pizzaService.create(formPizza);
         
         return "redirect:/pizzas";
     }
@@ -84,7 +79,7 @@ public class PizzaController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
 
-        model.addAttribute("pizza", pizzaRepository.findById(id).get());
+        model.addAttribute("pizza", pizzaService.getById(id));
         model.addAttribute("ingredients", ingredientRepository.findAll());
         return "/pizzas/edit";
     }
@@ -96,14 +91,14 @@ public class PizzaController {
             return"/pizzas/edit";
         }
         
-        pizzaRepository.save(formPizza);
+        pizzaService.update(formPizza);
         return "redirect:/pizzas";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id){
 
-        Pizza pizza = pizzaRepository.findById(id).get();
+        Pizza pizza = pizzaService.getById(id);
 
         // for (Offerta offertaToDelete: pizza.getOfferte()) {
         //     offertaRepository.delete(offertaToDelete);
@@ -111,7 +106,7 @@ public class PizzaController {
 
 
         //pizzaRepository.deleteById(id); --> La query per cercare il libro e cancellarlo è già stato fatto quindi posso cancellarlo in questo modo:
-        pizzaRepository.delete(pizza);
+        pizzaService.delete(pizza);
 
         return "redirect:/pizzas";
     }
@@ -119,7 +114,7 @@ public class PizzaController {
     @GetMapping("/{id}/offerta")
     public String offerta(@PathVariable ("id") Integer id, Model model) {
         Offerta offerta = new Offerta();
-        offerta.setPizza(pizzaRepository.findById(id).get());
+        offerta.setPizza(pizzaService.getById(id));
 
         model.addAttribute("offerta", offerta);
         return "offerte/create-or-edit";
