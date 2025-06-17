@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/resources :: headTags}">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('pizzas')}"></nav>
+
+    <main class="container">
+        <h1 class="mt-3 mb-4">Pagina dettaglio della pizza!</h1> 
+        <h2 th:text="${pizza.name}"></h2>
+            <div class="row mt-4">
+        <div class="col-12">
+            <h4>Ingredienti:</h4>
+            <th:block th:if="${pizza.ingredients.size() > 0}">
+                    <span class="badge bg-success mb-3 me-2" th:each="ingredient : ${pizza.ingredients}">
+                        <a th:href="@{/ingredients/{id}(id=${ingredient.id})}" class="text-white text-decoration-none">
+                        [[${ingredient.name}]]
+                        </a>
+                    </span>
+
+            </th:block>
+
+            <th:block th:unless="${pizza.ingredients.size() > 0}">
+                <p class="alert alert-info mt-3">Questa pizza non ha ingredienti<p>
+            </th:block>
+        </div>
+    </div>
+        <section class="row">
+            <div class="col-12">
+                <div class="card h-100 show-card">
+                <img th:src="${pizza.photo}" class="card-img-top" alt="Foto pizza">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${pizza.name}">Nome</h5>
+                    <p class="card-text" th:text="${pizza.description}">Descrizione</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted" th:text="'€ ' + ${pizza.price}">Prezzo</small>
+                </div>
+            </div>
+        </section>
+
+        <div class="row mt-4" th:if="${pizza.offerte.size()>0}">
+            <div class="col-md-4  offerta  mb-4" th:each="offerta: ${pizza.offerte}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${offerta.title}"></h5>
+                        <p class="card-text" th:text="'Data di inizio: ' + ${offerta.offerDate}"></p>
+                        <p class="card-text" th:text="'Data di fine: '+ ${offerta.endDate}"></p>
+                    </div>
+                    <a class="btn btn-outline-info" th:href="@{/offerte/edit/{id}(id=${offerta.id})}" role="button">Modifica</a>
+   
+                </div>
+            </div>
+
+            <div class="col-12 text-center mb-2">
+                <a class="btn btn-outline-success  w-30" th:href="@{/pizzas/{id}/offerta(id=${pizza.id})}" role="button">Crea la tua offerta speciale</a> 
+            </div>
+            
+
+        </div>
+
+        <div class="row mt-4" th:unless="${pizza.offerte.size()>0}">
+            <div class="alert alert-warning" role="alert">
+                <h4>Al momento non ci sono offerte disponibili!</h4>
+            </div>
+            <div class="col-12 text-center mb-2">
+                <a class="btn btn-outline-success  w-30" th:href="@{/pizzas/{id}/offerta(id=${pizza.id})}" role="button">Crea la tua offerta speciale</a> 
+            </div>
+        </div>
+
+    </main> 
+    <div th:replace="~{fragments/resources :: goBackButton}"></div>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/resources :: headTags}">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('ingredients')}"></nav>
+
+    
+
+<div class="container mt-4">
+    <h1>Ingredienti disponibili</h1>
+
+    <div class="text-center p-4 my-2">
+        <a class="btn btn-outline-primary" th:href="@{/ingredients/create}" role="button">Crea i tuoi ingredienti!</a>
+    </div> 
+
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${ingredients.size()>0}">
+        <div class="col" th:each="ingredient : ${ingredients}">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${ingredient.name}">Nome</h5>
+                    <span th:text="'ID: ' + ${ingredient.id}"></span>
+                    <!-- <p class="card-text" th:text="${ingredient.description}">Descrizione</p> -->
+                </div>
+
+                <div class="card-footer text-center">
+                    <div class="d-flex justify-content-center gap-2 my-2">
+                        <a class="btn btn-outline-primary" th:href="@{/ingredients/{id}(id=${ingredient.id})}" role="button">Dettaglio</a>
+                        <a class="btn btn-outline-info" th:href="@{/ingredients/edit/{id}(id=${ingredient.id})}" role="button">Modifica</a>
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" th:attr="data-bs-target='#delete-modal-' + ${ingredient.id}">Elimina
+                        </button>
+
+                        <!-- Modal -->
+                         <div class="modal fade" th:id="'delete-modal-' + ${ingredient.id}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="'Deleting ' + ${ingredient.name}"></h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" th:text="'Sei sicuro di voler cancellare: ' + ${ingredient
+                                                .name} + ' con l\'id: ' + ${ingredient.id} + '?'">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Annulla
+                                                </button>
+                                                <form th:action="@{/ingredients/delete/{id}(id=${ingredient.id})}" method="post" class="d-inline">
+                                                    <input type="submit" value="Cancella definitivamente" class="btn btn-outline-danger">
+                                                </form> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>                  
+            </div>
+
+</div>
+        </div>
+            <div th:if="${ingredients.size() == 0}">
+        <h2 class="text-danger mt-4">Nessun ingrediente disponibile</h2>
+    </div>
+
+</div>
+
+ <div th:replace="~{fragments/resources :: goBackButton}"></div>
+
+
+    <div th:replace="~{fragments/resources :: scripts}"></div>
+</body>
+</html>

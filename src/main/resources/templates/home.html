@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/resources :: headTags}">
+</head>
+<body>
+    
+    <nav th:replace="~{fragments/navbar :: navbar('pizzas')}"></nav>
+
+        <div class="container">
+            <h1>🍕 Benvenuti da Pizzeria Carletto</h1>
+            <p>
+                Alla Pizzeria Carletto uniamo tradizione e passione per offrirti un'esperienza autentica tutta italiana. Da anni sforniamo pizze preparate con ingredienti freschi, impasti lievitati naturalmente e tanta cura in ogni dettaglio.
+
+                Che tu sia amante della classica Margherita o curioso di provare gusti più creativi, troverai sempre la pizza perfetta per te. Il nostro forno a legna e l’atmosfera familiare ti faranno sentire subito a casa.
+
+                Siediti, rilassati… e lasciati conquistare dal profumo irresistibile della vera pizza artigianale.
+                Pizzeria Carletto: dove la semplicità diventa bontà.
+            </p>
+        </div>
+
+
+
+
+    <div th:replace="~{fragments/resources :: scripts}"></div>
+</body>
+</html>

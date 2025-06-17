@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/resources :: headTags}">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('ingredients')}"></nav>
+    
+<div class="container mt-4">
+    <div class="container mt-5" th:object="${ingredient}">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="card-title mb-3" th:if="${create}">
+					Crea un nuovo ingrediente:
+				</h1>
+				<h1 class="card-title mb-3" th:unless="${create}">
+					Modifica il nuovo ingrediente:
+				</h1>
+                <form id="pizza-form" th:object="${ingredient}" th:action="${edit} ? @{/ingredients/edit/{id}(id=${ingredient.id})} : @{/ingredients/create}" method="post">
+
+                    <div class="mb-2">
+                        <label for="title" class="form-label">Nome dell'ingrediente</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" th:errorClass="is-invalid" minlength="2"  maxlength="30" placeholder="es. Peperoni">
+                        <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err:${#fields.errors('name')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="description" class="form-label">Descrizione dell'ingrediente</label>
+                        <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3 mt-3">
+                        <input type="submit" value="Save" class="btn btn-outline-primary">
+					    <input type="reset" value="Reset fields" class="btn btn-outline-warning">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ <div th:replace="~{fragments/resources :: ingredientGoBackButton}"></div>
+
+
+    <div th:replace="~{fragments/resources :: scripts}"></div>
+</body>
+</html>

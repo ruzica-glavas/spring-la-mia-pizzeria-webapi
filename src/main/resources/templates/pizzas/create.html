@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/resources :: headTags}">
+</head>
+<body>
+    
+    <nav th:replace="~{fragments/navbar :: navbar('pizzas')}"></nav>
+
+    
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="mb-4">Crea la tua nuova pizza!</h1> 
+                <form id="pizza-form" th:object="${pizza}" th:action="@{/pizzas/create}" method="post">
+                    <div class="mb-2">
+                        <label for="name" class="form-label">Nome della Pizza</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" th:errorClass="is-invalid" minlength="2"  maxlength="30" placeholder="es. Mascarpone">
+                        <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err:${#fields.errors('name')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="description" class="form-label">Descrizione della Pizza</label>
+                        <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="photo" class="form-label">Foto della Pizza</label>
+                        <input type="text" class="form-control" id="photo" th:field="*{photo}"  th:errorClass="is-invalid" placeholder="URL">
+
+                        <div th:if="${#fields.hasErrors('photo')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err:${#fields.errors('photo')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="price" class="form-label">Prezzo della Pizza</label>
+                        <input type="number" class="form-control" id="price" min="1" step="0.01" th:field="*{price}" th:errorClass="is-invalid" placeholder="es. € 7.20">
+
+                        <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err:${#fields.errors('price')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-2" th:each="ingredient : ${ingredients}">
+						<input th:id="'ingredient'+${ingredient.id}" type="checkbox" class="form-check-input" th:field="${pizza.ingredients}" th:value="${ingredient.id}">
+						<label th:for="'ingredient'+${ingredient.id}" th:text="${ingredient.name}" class="form-check-label" ></label>
+					</div>
+
+                    <div class="d-flex justify-content-center gap-3 mt-3">
+                        <input type="submit" value="Save" class="btn btn-outline-primary">
+					    <input type="reset" value="Reset fields" class="btn btn-outline-warning">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/resources :: goBackButton}"></div>
+    
+
+
+
+
+    <div th:replace="~{fragments/resources :: scripts}"></div>
+</body>
+</html>

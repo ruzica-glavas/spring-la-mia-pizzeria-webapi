@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:fragment="headTags">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pizzeria</title>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.6/css/bootstrap.min.css}" />
+        <link rel="stylesheet" th:href="@{/css/imgCard.css}" />
+    </th:block>
+
+
+</head>
+<body>
+
+    <th:block th:fragment="goBackButton">
+        <div class="text-center my-2">
+            <a class="btn btn-outline-danger" th:href="@{/pizzas}" role="button">Torna alla pagina iniziale</a>
+        </div>  
+    </th:block>
+
+    <th:block th:fragment="ingredientGoBackButton">
+        <div class="text-center my-2 p-4">
+            <a class="btn btn-outline-danger" th:href="@{/ingredients}" role="button">Torna alla pagina con gli ingredienti</a>
+            </div>   
+    </th:block>
+    
+    <th:block th:fragment="scripts" >
+        <script th:src="@{/webjars/bootstrap/5.3.6/js/bootstrap.bundle.min.js}"></script>
+    </th:block>
+    
+</body>
+</html>

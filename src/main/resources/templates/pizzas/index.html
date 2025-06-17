@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/resources :: headTags}">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('pizzas')}"></nav>
+    <!-- <p th:text="${pizzas}"></p> -->
+
+    
+
+<div class="container mt-4">
+
+    <form class="d-flex" role="search" method="get" th:action="@{/pizzas}">
+        <input class="form-control me-2" type="search" name="name" placeholder="Cerca la tua pizza" aria-label="Search" th:value="${name}"/>
+        <button class="btn btn-outline-primary" type="submit">Cerca</button>
+    </form>
+
+    <div class="text-center p-4 my-2">
+        <a class="btn btn-outline-primary" th:href="@{/pizzas/create}" role="button">Crea la tua nuova Pizza!</a>
+    </div> 
+
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${pizzas.size()>0}">
+        <div class="col" th:each="pizza : ${pizzas}">
+            <div class="card h-100">
+                <img th:src="${pizza.photo}" class="card-img-top" alt="Foto pizza">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${pizza.name}">Nome</h5>
+                    <p class="card-text" th:text="${pizza.description}">Descrizione</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted fw-bold" th:text="'€ ' + ${pizza.price}">Prezzo</small>
+                </div>
+
+                <div class="card-footer text-center">
+                    <div class="d-flex justify-content-center gap-2 my-2">
+                        <a class="btn btn-outline-success" th:href="@{/pizzas/{id}/offerta(id=${pizza.id})}" role="button">Offerta</a>
+                        <a class="btn btn-outline-primary" th:href="@{/pizzas/{id}(id=${pizza.id})}" role="button">Dettaglio</a>
+                        <a class="btn btn-outline-info" th:href="@{/pizzas/edit/{id}(id=${pizza.id})}" role="button">Modifica</a>
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" th:attr="data-bs-target='#delete-modal-' + ${pizza.id}">Elimina
+                        </button>
+
+                        <!-- Modal -->
+                         <div class="modal fade" th:id="'delete-modal-' + ${pizza.id}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Deleting [[*{name}]]</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" th:text="'Sei sicuro di voler cancellare: ' + ${pizza.name} + ' con l\'id: ' + ${pizza.id} + '?'">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Annulla
+                                                </button>
+                                                <form th:action="@{/pizzas/delete/{id}(id=${pizza.id})}" method="post" class="d-inline">
+                                                    <input type="submit" value="Cancella definitivamente" class="btn btn-outline-danger">
+                                                </form> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        <!-- <form action="#" th:action="@{/pizzas/delete/{id}(id=${pizza.id})}" method="post">
+                            <button type="submit" class="btn btn-outline-danger">
+                                Elimina
+                            </button>
+                        </form> -->
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </div>
+    <div th:if="${pizzas.size() == 0}">
+        <h2 class="text-danger mt-4">Nessuna pizza trovata per "<span th:text="${name}">parola</span>"</h2>
+    </div>
+</div>
+
+<div class="text-center my-2 p-4">
+    <a class="btn btn-outline-danger" th:href="@{/pizzas}" role="button">Torna all'inizio della pagina</a>
+</div>   
+
+
+<!-- <h1 th:text="Non ci sono pizze disponibili!" th:unless="${pizzas.size()>0}"></h1> -->
+    
+
+
+    <div th:replace="~{fragments/resources :: scripts}"></div>
+</body>
+</html>

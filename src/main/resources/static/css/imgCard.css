@@ -1,0 +1,21 @@
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    width:100%;
+}
+
+.show-card {
+    width:30%;
+}
+
+.btn-primary{
+    width:30%;
+    
+}
+
+.d-flex{
+    padding: 5%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
