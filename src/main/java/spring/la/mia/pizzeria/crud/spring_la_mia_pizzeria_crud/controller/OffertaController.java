@@ -9,7 +9,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.model.Offerta;
-import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.repository.OffertaRepository;
+// import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.repository.OffertaRepository;
+import spring.la.mia.pizzeria.crud.spring_la_mia_pizzeria_crud.service.OffertaService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class OffertaController {
 
     @Autowired
-    private OffertaRepository offertaRepository;
+    private OffertaService offertaService;
 
 
 
@@ -35,7 +36,7 @@ public class OffertaController {
             return "offerte/create-or-edit";
         }
         
-        offertaRepository.save(formOfferta);
+        offertaService.create(formOfferta);
         
         return "redirect:/pizzas";
     }
@@ -44,7 +45,7 @@ public class OffertaController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model){
-        model.addAttribute("offerta", offertaRepository.findById(id).get());
+        model.addAttribute("offerta", offertaService.getById(id));
         model.addAttribute("edit", true);
         return "offerte/create-or-edit";
     };
@@ -57,7 +58,7 @@ public class OffertaController {
             return "offerte/create-or-edit";
         }
 
-        offertaRepository.save(formOfferta);
+        offertaService.update(formOfferta);
 
         return "redirect:/pizzas/" + formOfferta.getPizza().getId();
     };
