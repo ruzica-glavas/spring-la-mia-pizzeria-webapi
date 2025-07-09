@@ -37,7 +37,7 @@ public class Pizza {
     private String photo;
 
     @NotNull
-    @Min(value=0, message = "Prize can not be negative")
+    @Min(value=0, message = "Price can not be negative")
     private Float price;
 
     //Offerta
